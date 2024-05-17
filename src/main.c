@@ -9,13 +9,13 @@ typedef struct {
 bool increment_task(void *arg) {
   ArbitraryData *data = (ArbitraryData *)arg;
   printf("Incrementing counter: %d\n", ++data->counter);
-  return data->counter > 8;
+  return data->counter >= 8;
 }
 
 bool decrement_task(void *arg) {
   ArbitraryData *data = (ArbitraryData *)arg;
   printf("Decrementing counter: %d\n", --data->counter);
-  return data->counter < -5;
+  return data->counter <= -5;
 }
 
 int main() {

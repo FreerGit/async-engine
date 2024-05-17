@@ -44,9 +44,11 @@ PT_THREAD(async_engine_run(Engine *engine)) {
   static bool done = true;
   while (!engine->shutdown) {
     for (i = 0; i < engine->count; i++) {
-      bool completed = engine->tasks[i].function(engine->tasks[i].arg);
-      if (!completed)
+      if (!engine->tasks[i].is_done) {
+        bool ret = engine->tasks[i].function(engine->tasks[i].arg);
+        engine->tasks[i].is_done = ret;
         done = false;
+      }
     }
 
     if (done) {

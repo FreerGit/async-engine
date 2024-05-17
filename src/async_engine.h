@@ -9,6 +9,7 @@
 typedef bool (*task_function_t)(void *);
 
 typedef struct {
+  bool is_done;
   task_function_t function;
   void *arg;
 } Task;
