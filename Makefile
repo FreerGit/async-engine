@@ -1,6 +1,7 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -std=c2x -Wall -Wextra -Iinclude
 ASAN = -fsanitize=address -fno-omit-frame-pointer
+INC_DIR = -Iinclude
 
 SRC_DIR = src
 OBJ_DIR = build
@@ -18,12 +19,12 @@ all: $(TARGET)
 
 # Build target
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(ASAN) -o $@ $^
+	$(CC) $(CFLAGS) $(ASAN) $(INC_DIR) -o $@ $^
 
 # Compile .c to .o
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(ASAN) -c -o $@ $<
+	$(CC) $(CFLAGS) $(ASAN) $(INC_DIR) -c -o $@ $<
 
 clean:
 	rm -rf $(OBJ_DIR) $(TARGET)
