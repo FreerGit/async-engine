@@ -41,19 +41,18 @@ PT_THREAD(async_engine_run(Engine *engine)) {
 
   PT_BEGIN(&engine->pt);
 
-  static bool done = 0;
+  static bool done = true;
   while (!engine->shutdown) {
     for (i = 0; i < engine->count; i++) {
-      done = engine->tasks[i].function(engine->tasks[i].arg);
-      if (done) {
-        for (size_t j = i; j < engine->count - 1; j++)
-          engine->tasks[j] = engine->tasks[j + 1];
-        engine->count--;
-        if (engine->count == 0)
-          engine->shutdown = true;
-        i--;
-      }
+      bool completed = engine->tasks[i].function(engine->tasks[i].arg);
+      if (!completed)
+        done = false;
     }
+
+    if (done) {
+      engine->shutdown = true;
+    }
+    done = true;
     PT_YIELD(&engine->pt);
   }
 
