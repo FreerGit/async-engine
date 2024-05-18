@@ -1,10 +1,17 @@
 CC = gcc
 CFLAGS = -std=c2x -Wall -Wextra -Iinclude
-ASAN = -fsanitize=address -fno-omit-frame-pointer
 INC_DIR = -Iinclude
 
 SRC_DIR = src
 OBJ_DIR = build
+
+BUILD ?= release
+
+ifeq ($(BUILD), release)
+	ASAN = 
+else
+	ASAN = -fsanitize=address -fno-omit-frame-pointer
+endif
 
 # Find all .c files in the src dir
 SRCS = $(wildcard $(SRC_DIR)/*.c)
